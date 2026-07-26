@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simulador Biocinético e Radiotoxicológico de Césio-137 — Modelagem computacional preditiva da dinâmica do Cs-137 no organismo humano.">
+    <title>SimBio Cs-137 — Simulador Biocinético</title>
+
+    <!-- Google Fonts (embutido para funcionar offline via cache ou fallback) -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    </style>
+
+    <!-- Fallback: fontes do sistema caso esteja offline -->
+    <style>
+        @font-face {
+            font-family: 'Inter';
+            src: local('Inter'), local('Inter-Regular');
+            font-weight: 400;
+            font-display: swap;
+        }
+    </style>
+
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- ==================== CABEÇALHO ==================== -->
+    <header class="header">
+        <div class="header-icon">☢️</div>
+        <h1>Simulador Biocinético de Césio-137</h1>
+        <p>Modelagem computacional preditiva · ICRP 56/67/134</p>
+    </header>
+
+    <!-- ==================== ENTRADA DE DADOS ==================== -->
+    <section class="card" id="secao-entrada">
+        <div class="card-title">
+            <span class="card-title-icon">📥</span>
+            Parâmetros de Exposição
+        </div>
+
+        <div class="form-grid">
+            <!-- Atividade -->
+            <div class="form-group">
+                <label for="input-atividade">
+                    Atividade da Fonte <span class="unit">(MBq)</span>
+                </label>
+                <input type="number" id="input-atividade"
+                       placeholder="Ex: 50.9" step="0.1" min="0.001">
+            </div>
+
+            <!-- Via de Exposição -->
+            <div class="form-group">
+                <label for="input-via">Via de Exposição</label>
+                <select id="input-via">
+                    <option value="ingestao">Ingestão</option>
+                    <option value="inalacao">Inalação</option>
+                    <option value="dermica">Dérmica (contato cutâneo)</option>
+                </select>
+            </div>
+
+            <!-- Faixa Etária -->
+            <div class="form-group">
+                <label for="input-idade">Faixa Etária</label>
+                <select id="input-idade">
+                    <option value="neonato">Neonato (0–3 meses)</option>
+                    <option value="1_ano">1 ano</option>
+                    <option value="5_anos">5 anos</option>
+                    <option value="10_anos">10 anos</option>
+                    <option value="15_anos">15 anos</option>
+                    <option value="adulto" selected>Adulto (≥ 20 anos)</option>
+                </select>
+            </div>
+
+            <!-- Peso -->
+            <div class="form-group">
+                <label for="input-peso">
+                    Peso Corporal <span class="unit">(kg)</span>
+                </label>
+                <input type="number" id="input-peso"
+                       placeholder="70" step="0.1" min="0.5" max="300">
+            </div>
+
+            <!-- Latência -->
+            <div class="form-group">
+                <label for="input-latencia">
+                    Latência até Socorro <span class="unit">(horas)</span>
+                </label>
+                <input type="number" id="input-latencia"
+                       placeholder="0" value="0" step="0.5" min="0">
+            </div>
+
+            <!-- Duração da Simulação -->
+            <div class="form-group">
+                <label for="input-duracao">
+                    Duração da Simulação <span class="unit">(dias)</span>
+                </label>
+                <input type="number" id="input-duracao"
+                       placeholder="365" value="365" step="1" min="1" max="36500">
+            </div>
+        </div>
+
+        <!-- Azul da Prússia -->
+        <div class="checkbox-group" style="margin-top: 18px;">
+            <input type="checkbox" id="input-azul-prussia">
+            <label for="input-azul-prussia">
+                Simular tratamento com <strong>Azul da Prússia</strong> (agente quelante)
+            </label>
+        </div>
+
+        <!-- Botões -->
+        <div class="btn-group">
+            <button class="btn btn-primary" id="btn-simular">
+                ▶ Executar Simulação
+            </button>
+            <button class="btn btn-secondary" id="btn-limpar">
+                ↺ Limpar
+            </button>
+        </div>
+
+        <!-- Info -->
+        <div class="info-box">
+            <strong>Como usar:</strong> Insira a atividade da fonte de Cs-137 (em MBq),
+            selecione a via de exposição, a faixa etária do indivíduo e ajuste o peso
+            se necessário. A simulação gera curvas de retenção corporal, excreção e
+            dose absorvida usando o modelo bicompartimental da ICRP. Marque a opção de
+            Azul da Prússia para comparar cenários com e sem tratamento.
+        </div>
+    </section>
+
+    <!-- ==================== RESULTADOS (gerado dinamicamente) ==================== -->
+    <section id="secao-resultados" class="results-section"></section>
+
+    <!-- ==================== RODAPÉ ==================== -->
+    <footer class="footer">
+        <p>
+            SimBio Cs-137 · Simulador Biocinético e Radiotoxicológico<br>
+            Baseado em ICRP Publications 56, 67, 89, 119, 134 ·
+            Ferramenta educacional — não substitui análise profissional
+        </p>
+    </footer>
+
+</div>
+
+<!-- Scripts (ordem importa: fórmulas antes da app) -->
+<script src="formulas.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
